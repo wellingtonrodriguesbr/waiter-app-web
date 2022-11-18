@@ -12,7 +12,7 @@ export const Description = styled.div`
   justify-content: space-between;
   padding: 1.8125rem 0;
 
-  div {
+  > div {
     h1 {
       font-size: 2rem;
       color: #fff;
