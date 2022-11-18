@@ -37,10 +37,6 @@ export const TableContainer = styled.button`
   border: 1px solid rgba(204, 204, 204, 0.4);
   border-radius: 0.5rem;
 
-  & + button {
-    margin-top: 1.5rem;
-  }
-
   strong {
     font-weight: 500;
   }
