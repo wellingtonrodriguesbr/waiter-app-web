@@ -11,20 +11,27 @@ interface OrderCardProps {
 
 export function OrderCard({ icon, text, orders }: OrderCardProps) {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
-  function handleOpenModal() {
+  function handleOpenModal(order: Order) {
     setIsModalVisible(true);
+    setSelectedOrder(order);
+  }
+
+  function handleCloseModal() {
+    setIsModalVisible(false);
+    setSelectedOrder(null);
   }
 
   return (
     <OrderCardContainer>
-      <h2>
+      <header>
         <span>{icon}</span>
-        {text}
+        <h2>{text}</h2>
         <span>({orders.length})</span>
-      </h2>
+      </header>
       {orders.map((order) => (
-        <TableContainer key={order._id} onClick={handleOpenModal}>
+        <TableContainer key={order._id} onClick={() => handleOpenModal(order)}>
           <strong>Mesa {order.table}</strong>
           <span>
             {order.products.length}{" "}
@@ -33,7 +40,11 @@ export function OrderCard({ icon, text, orders }: OrderCardProps) {
         </TableContainer>
       ))}
 
-      <OrderModal isOpen={isModalVisible} />
+      <OrderModal
+        isOpen={isModalVisible}
+        order={selectedOrder}
+        onClose={handleCloseModal}
+      />
     </OrderCardContainer>
   );
 }

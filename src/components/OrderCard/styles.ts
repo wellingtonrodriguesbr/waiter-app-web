@@ -4,20 +4,22 @@ export const OrderCardContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   gap: 1.5rem;
   padding: 1rem;
   border-radius: 1rem;
   border: 1px solid rgba(204, 204, 204, 0.4);
 
-  h2 {
+  > header {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
-    font-size: 0.875rem;
     margin-top: 1rem;
+
+    h2 {
+      font-size: 0.875rem;
+    }
 
     span {
       font-weight: 400;

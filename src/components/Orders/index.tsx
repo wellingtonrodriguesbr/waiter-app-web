@@ -44,7 +44,7 @@ const orders: Order[] = [
           imagePath: "1668591742614-coca-cola.png",
           price: 7,
         },
-        quantity: 3,
+        quantity: 6,
         _id: "6374b75f548a679de48598d2",
       },
     ],
