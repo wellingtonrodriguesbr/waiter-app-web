@@ -68,6 +68,9 @@ export const OrderDetails = styled.div`
 
 export const OrdersItems = styled.div`
   margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 `;
 
 export const Item = styled.div`
@@ -116,6 +119,11 @@ export const Actions = styled.footer`
   flex-direction: column;
   margin-top: 2rem;
   gap: 1rem;
+
+  button:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
 
   > button:first-child {
     display: flex;

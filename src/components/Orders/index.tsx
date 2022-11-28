@@ -1,52 +1,67 @@
+import { useEffect, useState } from "react";
+import { api } from "../../service/api";
 import { Order } from "../../types/Order";
 import { Container } from "../Container";
 import { OrderCard } from "../OrderCard";
 import { OrdersContainer } from "./styles";
 
 export function Orders() {
+  const [orders, setOrders] = useState<Order[]>([]);
+
+  async function getOrders() {
+    const { data } = await api.get("/orders");
+    setOrders(data);
+  }
+
+  function handleCancelOrder(orderId: string) {
+    setOrders((prevState) =>
+      prevState.filter((order) => order._id !== orderId)
+    );
+  }
+
+  function handleOrderStatusChange(orderId: string, status: Order["status"]) {
+    setOrders((prevState) =>
+      prevState.map((order) =>
+        order._id === orderId ? { ...order, status } : order
+      )
+    );
+  }
+
+  useEffect(() => {
+    getOrders();
+  }, []);
+
+  const waiting = orders.filter((order) => order.status === "WAITING");
+  const inProduction = orders.filter(
+    (order) => order.status === "IN_PRODUCTION"
+  );
+  const done = orders.filter((order) => order.status === "DONE");
+
   return (
     <OrdersContainer>
       <Container>
-        <OrderCard orders={orders} icon="🕑" text="Fila de espera" />
-        <OrderCard orders={[]} icon="👩‍🍳" text="Em produção" />
-        <OrderCard orders={[]} icon="✅" text="Pronto!" />
+        <OrderCard
+          onChangeOrderStatus={handleOrderStatusChange}
+          onCancelOrder={handleCancelOrder}
+          orders={waiting}
+          icon="🕑"
+          text="Fila de espera"
+        />
+        <OrderCard
+          onChangeOrderStatus={handleOrderStatusChange}
+          onCancelOrder={handleCancelOrder}
+          orders={inProduction}
+          icon="👩‍🍳"
+          text="Em produção"
+        />
+        <OrderCard
+          onChangeOrderStatus={handleOrderStatusChange}
+          onCancelOrder={handleCancelOrder}
+          orders={done}
+          icon="✅"
+          text="Pronto!"
+        />
       </Container>
     </OrdersContainer>
   );
 }
-
-const orders: Order[] = [
-  {
-    _id: "6374b75f548a679de48598d1",
-    table: "1",
-    status: "WAITING",
-    products: [
-      {
-        product: {
-          name: "Coca Cola",
-          imagePath: "1668591742614-coca-cola.png",
-          price: 7,
-        },
-        quantity: 3,
-        _id: "6374b75f548a679de48598d2",
-      },
-    ],
-  },
-
-  {
-    _id: "6374b75f548a679de48598d11",
-    table: "3",
-    status: "WAITING",
-    products: [
-      {
-        product: {
-          name: "Coca Cola",
-          imagePath: "1668591742614-coca-cola.png",
-          price: 7,
-        },
-        quantity: 6,
-        _id: "6374b75f548a679de48598d2",
-      },
-    ],
-  },
-];

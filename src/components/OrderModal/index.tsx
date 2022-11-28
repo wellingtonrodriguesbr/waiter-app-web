@@ -19,9 +19,19 @@ interface OrderModalProps {
   isOpen: boolean;
   onClose: () => void;
   order: Order | null;
+  onCancelOrder: () => void;
+  isLoading: boolean;
+  onChangeOrderStatus: () => void;
 }
 
-export function OrderModal({ isOpen, order, onClose }: OrderModalProps) {
+export function OrderModal({
+  isOpen,
+  order,
+  onClose,
+  onCancelOrder,
+  isLoading,
+  onChangeOrderStatus,
+}: OrderModalProps) {
   const total = order?.products.reduce((acc, item) => {
     return (acc += item.product.price * item.quantity);
   }, 0);
@@ -93,11 +103,29 @@ export function OrderModal({ isOpen, order, onClose }: OrderModalProps) {
             </OrderDetails>
 
             <Actions>
-              <button type="button">
-                <span>👩‍🍳</span>
-                <strong>Iniciar Produção</strong>
+              {order?.status !== "DONE" && (
+                <button
+                  type="button"
+                  disabled={isLoading}
+                  onClick={onChangeOrderStatus}
+                >
+                  <span>{order?.status === "WAITING" ? "👩‍🍳" : "✅"}</span>
+                  <strong>
+                    {order?.status === "WAITING"
+                      ? "Iniciar produção"
+                      : "Concluir pedido"}
+                  </strong>
+                </button>
+              )}
+              <button
+                type="button"
+                disabled={isLoading}
+                onClick={onCancelOrder}
+              >
+                {order?.status === "DONE"
+                  ? "Deletar pedido"
+                  : "Cancelar pedido"}
               </button>
-              <button type="button">Cancelar pedido</button>
             </Actions>
           </ModalContainer>
         </Overlay>
