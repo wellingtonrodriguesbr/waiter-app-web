@@ -5,6 +5,8 @@ import { Container } from "../Container";
 import { OrderCard } from "../OrderCard";
 import { OrdersContainer } from "./styles";
 
+import socketIo from "socket.io-client";
+
 export function Orders() {
   const [orders, setOrders] = useState<Order[]>([]);
 
@@ -29,6 +31,15 @@ export function Orders() {
 
   useEffect(() => {
     getOrders();
+  }, []);
+
+  useEffect(() => {
+    const socket = socketIo("http://localhost:3333", {
+      transports: ["websocket"],
+    });
+    socket.on("orders@new", (order) => {
+      setOrders((prevState) => prevState.concat(order));
+    });
   }, []);
 
   const waiting = orders.filter((order) => order.status === "WAITING");
