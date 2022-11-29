@@ -57,7 +57,9 @@ export function OrderCard({
     try {
       await api.delete(`/orders/${selectedOrder?._id}`);
       toast.success(
-        `Pedido da mesa ${selectedOrder?.table} foi cancelado com sucesso!`
+        `Pedido da mesa ${selectedOrder?.table} foi ${
+          selectedOrder?.status === "DONE" ? "deletado" : "cancelado"
+        } com sucesso!`
       );
     } catch (error) {
       console.log(error);
